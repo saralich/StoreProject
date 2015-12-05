@@ -1,0 +1,62 @@
+userInfo{
+    text-align: right;
+
+}
+
+resize{
+   height: auto; 
+    width: auto; 
+    max-width: 100px; 
+    max-height: 100px;
+}
+
+element1 {
+	display: inline-block;
+
+}
+
+element2 {
+	display:inline-block;
+
+}
+
+* {
+	letter-spacing: 3px;
+	font-weight: 200;
+	font-family: Helvetica;
+}
+
+a{
+
+	text-decoration: none;
+	color: #2f4f4f;
+
+}
+
+h3 a:hover{
+
+	color: hotpink;
+}
+
+.inputBox {
+  letter-spacing: 1px;
+}
+
+.hidden {
+  display: none;
+
+}
+
+.container {
+  width: 500px;
+  clear: both;
+}
+
+.container label {
+  width: 100%;
+  clear: both;
+}
+
+form  { display: table;      }
+div     { display: table-row;  }
+label { display: table-cell; }

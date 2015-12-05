@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang = "en">
+<head>
+	<link rel="stylesheet" type="text/css" href="/static/project.css"/>
+	<title>ACCOUNT PAGE</title>
+
+	<p style = "letter-spacing:8px"> 
+		<h3> 
+			<a href="/home"> <img src = "/static/Bows.png" style = "vertical-align:middle" height="100" />BOWS AND BOTS</a> 
+				
+			<div style = "float:right; font-family: Helvetica">
+                              <!--<form name = "searchBox" id="searchform" method="get" accept-charset="utf-8">
+                                <input type="text" placeholder="Search...">
+                                <input type="button" value="Search">
+                              <form>-->
+			</div>
+			<a href="linkedin.com" style = "float:right; font-size:15px; padding: 8px"> CART</a> 
+		</h3>	
+	</p> 
+
+	<line style = "letter-spacing:0px"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line>	
+	
+	<center>
+		<h1 style = "letter-spacing: 15px"> ACCOUNT SIGN IN </h1>
+		<h3>
+			<a href = "/home">HOME</a>
+			<a href = "/products">PRODUCTS</a> 
+			<a href = "/contact">CONTACT</a>
+		</h3>
+	</center>
+	<line style = "letter-spacing:0"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line>
+</head>
+<body>
+<p/>
+
+	<center>
+	
+	<form action="/login/" method = "post" name = "loginUser">
+	
+	{% csrf_token %}
+
+	{% if next %}
+    <input type="hidden" name="next" value="{{ next }}"/>
+    {% endif %}
+
+		{{ form.non_field_errors}}
+		<div>
+          {{ form.username.errors }}
+          {{form.username.labeltag}}
+          <label for = "Username">Username</label>
+          {{ form.username}}
+        </div>
+
+		<div>
+          {{ form.password.errors }}
+          {{ from.password.labeltag}}
+          <label for="Password">Password</label>
+          {{ form.password}}
+        </div>
+
+        <input type="Submit" name="loginUser" value="Login"/>
+	
+
+		</form>
+		</center>
+<p/>
+<center>
+		<a href = "/register" style = "color: blue">Register for account?</a>
+	</center>
+</body>
+</html>

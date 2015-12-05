@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang = "en">
+<head>
+  <link rel="stylesheet" type="text/css" href="/static/project.css"/>
+  <title>Products</title>
+
+  <p style = "letter-spacing:8px"> 
+  <h3> 
+    <a href={% url 'storeApp.views.homePage' %}> <img src = "/static/Bows.png" style = "vertical-align:middle" height="100" />BOWS AND BOTS</a> 
+      
+    <form style = "float:right; font-family: Helvetica">
+                                <input type="text" placeholder="Search..." required>
+                                <input type="button" value="Search">
+    </form>
+    <!--<a href = "KellyWebsiteNew.html" style = "color: #2f4f4f;">HOME</a>-->
+    <a href= "/login" style = "float:right; font-size:15px; padding:8px"> SIGN IN</a> 
+
+    <a href="Cart.html" style = "float:right; font-size:15px; padding: 8px"> CART</a> 
+  </h3> </p> 
+
+      <line style = "letter-spacing:0px"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line> 
+  
+  <center>
+  <h1 style = "letter-spacing: 15px"> PRODUCTS </h1></center>
+        <line style = "letter-spacing:0px"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line> 
+        <center>
+  <h3>
+    <a href = "/home" >HOME</a>
+      <a href = "/contact">CONTACT</a>
+    </h3></center>
+  <line style = "letter-spacing:0"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line>
+</head>
+
+<body>
+<body class="align">
+  <div class="site__container">
+  <div class="grid__container">
+
+  <h1>Update Account Information</h1>
+    {{ state }}
+     <form action="/account/" method="post" class="form form--login"/>{% csrf_token %}
+    {% if next %}
+    <input type="hidden" name="next" value="{{ next }}"/>
+    {% endif %}
+
+    <div class="form__field">
+          {{ form.password.errors }}
+          {{ form.password.label_tag }}
+          <label class="fontawesome-lock" for="register__password"><span class="hidden">Password</span></label>
+          {{ form.password }}
+          <!--<input id="register__password" type="password" class="form__input" placeholder="Password" value="" required>-->
+        </div>
+    
+    <div class="form__field">
+          {{ form.repassword.errors }}
+          {{ form.repassword.label_tag }}
+          <label class="fontawesome-lock" for="register__re-password"><span class="hidden">Re-Password</span></label>
+          {{ form.repassword }}
+          <!--<input id="register__re-password" type="password" class="form__input" placeholder="Re-Password" value="" required>-->
+        </div>
+    
+    <div class="form__field">
+          {{ form.email.errors }}
+          {{ form.email.label_tag }}
+          <label class="fontawesome-lock" for="register__email"><span class="hidden">Email</span></label>
+          {{ form.email }}
+          <!-- <input id="register__email" type="text" class="form__input" placeholder="Email" value="" required> -->
+        </div>
+
+        <div class="form__field">
+          {{ form.address.errors }}
+          {{ form.address.label_tag }}
+          <label class="fontawesome-lock" for="register__address"><span class="hidden">Address</span></label>
+          {{ form.address }}
+          <!--<input id="register__address" type="text" class="form__input" placeholder="Address" value="" required>-->
+        </div>
+
+    <div class="form__field">
+          <input type="submit" value="Update Account"/>
+        </div>
+        <p class="text--center">Done here? <a href="/index">Continue Browsing</a> <span class="fontawesome-arrow-right"></span></p>
+
+  </form>
+    
+    </div>
+
+  </div>
+
+</body>
+    
+</body>
+
+</html>
+Status API Training Shop Blog About Pricing

@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang = "en">
+<head>
+	<link rel="stylesheet" type="text/css" href="/static/project.css"/>
+	<title>LOAD PRODUCTS</title>
+
+	<p style = "letter-spacing:8px"> 
+		<h3> 
+			<a href="/home"> <img src = "/static/Bows.png" style = "vertical-align:middle" height="100" />BOWS AND BOTS</a> 
+			<div style = "float:right; font-family: Helvetica">
+                    <form id="searchform" action="/register/" method="get" accept-charset="utf-8">
+                                <input type="text" placeholder="Search..." required>
+                                <input type="button" value="Search">
+                    </form>
+			</div>
+		<!--<a href = "KellyWebsiteNew.html" style = "color: #2f4f4f;">HOME</a>-->
+			<a href="/login" style = "float:right; font-size:15px; padding:8px"> ACCOUNT</a> 
+
+			<a href="linkedin.com" style = "float:right; font-size:15px; padding: 8px"> CART</a> 
+		</h3>	
+	</p> 
+
+	<line style = "letter-spacing:0px"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line>	
+	
+	<center>
+		<h1 style = "letter-spacing: 15px"> LOAD PRODUCTS </h1>
+		<h3>
+			<a href = '/home/' >HOME</a>
+			<a href = '/products'>PRODUCTS</a>
+			<a href = '/contact'>CONTACT</a>
+		</h3>
+	</center>
+	<line style = "letter-spacing:0"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line>
+</head>
+
+<body class="align" >
+
+
+	
+	{% if errorMessage %}
+		<h1 style="color: red"> {{errorMessage}} </h1>
+	{% endif %}
+<center>
+	<h2>
+		
+		<form  action = "/loadProducts/" method="post" name = "loadProducts">
+		{% csrf_token %}
+
+		{% if next %}
+    	<input type="hidden" name="next" value="{{ next }}"/>
+    	{% endif %}
+
+		{{ form.non_field_errors}}
+		
+			<h4> Enter the appropriate information below to add an item </h4>
+				
+				<table>				
+
+				<tr >
+					<td>
+						<div>
+        					{{ form.productID.errors }}
+          					{{form.productID.labeltag}}
+          					<div><label >Product ID</label></div>
+          					{{ form.productID}}
+       					 </div>
+       				</td>
+					<td/>
+					<td>
+						<div>
+        					{{ form.productName.errors }}
+          					{{form.productName.labeltag}}
+          					<div><label >Product Name</label></div>
+          					{{ form.productName}}
+       					 </div>
+       				</td>
+					<td/>
+				</tr>
+				<tr>
+					<td>
+						<div>
+        					{{ form.productDescription.errors }}
+          					{{form.productDescription.labeltag}}
+          					<div><label >Product Description</label></div>
+          					{{ form.productDescription}}
+       					 </div>
+       				</td>
+					<td/>
+					<td>
+						<div>
+        					{{ form.productPrice.errors }}
+          					{{form.productPrice.labeltag}}
+          					<div><label >Product Price</label></div>
+          					{{ form.productPrice}}
+       					 </div>
+       				</td>
+					<td/>
+				</tr>
+				<tr>
+					<td>
+						<div>
+        					{{ form.productActive.errors }}
+          					{{form.productActive.labeltag}}
+          					<div><label >Product Active</label></div>
+          					{{ form.productActive}}
+       					 </div>
+       				</td>
+					<td/>
+					<td>
+						<div>
+        					{{ form.productQuantity.errors }}
+          					{{form.productQuantity.labeltag}}
+          					<div><label for="quantity">Product Quantity</label></div>
+          					{{ form.productQuantity}}
+       					 </div>
+       				</td>
+					<td/>
+					
+				</tr>
+					<!--<td>Supplier<div> <input type="Text" name="productSupplier" value="" /></div></td>
+					<td/>
+					<td>Order<div><input type="Text" name="productOrder" value="" /></div></td>
+				<tr>
+					<td>Contains<div> <input type="Text" name="productContains" value="" /></div></td>
+				</tr>-->
+				</table>
+				
+
+		<!--		<table style="padding: 5px; font-size:50%" id="Products">				
+				<tr style="font: bold"> 
+					<th> User ID </th>					
+					<th> User Name</th>
+					<th> User Password </th>
+					<th> User Address</th>
+					<th> User is Staff </th>
+				</tr>
+				<tr >
+					<td><div style="display: "><input type="Text" name="userToChangeID" value="" /></div></td>					
+					<td> User ID<input type="Text" name="UserName" value="" /></td>
+					<td> User Name<input type="Text" name="UserPassword" value="" /></td>
+					<td> User Password<input type="Text" name="UserAddress" value="" /></td>
+					<td> Staff<input type="Text" name="UserIsStaff" value="" /></td>
+				</tr>
+				</table>
+
+				<table style="padding: 5px; font-size:50%" id="Products">				
+				<tr style="font: bold"> 
+					<th> Order ID </th>
+					<th> Order Paid </th>
+					<th> Order Date</th>
+				</tr>
+				<tr >
+					<td><div style="display: "><input type="Text" name="orderToChangeID" value="" /></div></td>
+					<td> <input type="Text" name="OrderPaid" value="" /></td>
+					<td> <input type="Text" name="OrderDate" value="" /></td>
+
+				</tr>
+				</table>-->
+			<input type="Submit" value="Add Product" onclick="javascript: form.action='/loadProducts/';">
+			</h2>
+			</form>
+	</center>
+    
+	
+
+   
+    
+</body>
+</html>
