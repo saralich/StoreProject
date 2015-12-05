@@ -42,9 +42,8 @@
 			Password: <span class="hidden">'{{request.user.password}}'</span>s
 			Email: '{{request.user.user_email}}'
 			Address: '{{request.user.user_address}}'
-		{% else %}
-			<a href = "/SignIn.html"> LOGIN</a>
 		{% endif %}
+		<a href = "/login"> LOGIN</a>
 		<a href = "/updateAccountPage"> UPDATE</a>
 		<a href = "/deleteAccountPage"> DELETE</a>s
 	</form>

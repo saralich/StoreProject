@@ -11,11 +11,37 @@
 			<div style = "float:right; font-family: Helvetica"> </div>
 		</h3>
 	</p>
+	<center>
 	<h2>
 		<form action = "/search/" method = "get" name = "search">
 			<input type = "Text" name = "q" id = "id_q" value = "{{query}}" placeholder="Search..." required/>
 			<input type = "Submit" name = "search" value = "Search"/>
 		</form>
 	</h2>
+	<div>
+	{% if results %}
+		<table style = "padding: 8px; letter-spacing: 8px; font-size: 15px" id = "Products">
+		<tr style = "font: bold">
+			<tr>ID</tr>
+			<tr>Name</tr>
+			<tr>Description</tr>
+			<tr>Price</tr>
+			<tr>Active</tr>
+			<tr>In Stock</tr>
+		</tr>
+		{% for p in results %}
+		<tr>
+			<td> {{p.product_id}} </td>
+			<td> {{p.product_name}} </td>
+			<td> {{p.product_description}} </td>
+			<td> {{p.product_price}} </td>
+			<td> {{p.product_active}} </td>
+			<td> {{p.product_stock_quality}} </td>
+		</tr>
+		</table>
+		</div>
+		</center>
+		{% endfor %}
+	{% endif %}
 </head>
 </html>

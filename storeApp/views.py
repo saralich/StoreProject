@@ -46,14 +46,6 @@ def search(request):
 		results = None
 	context = RequestContext(request)
 	return render_to_response('Search.html',{'results':results}, context_instance = context)
-	"""itemList = Product.objects.order_by('product_id')
-	itemPriceList = Product.objects.order_by('product_price')
-	productPage = loader.get_template('Products.html')
-	context = RequestContext(request, {
-		'product_list': itemList,
-		'price_sorted_product_list': itemPriceList,
-		})
-	return HttpResponse(productPage.render(context))"""
 
 #@login_required(login_url='/login')
 def accountPage(request):
