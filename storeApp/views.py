@@ -169,16 +169,16 @@ def loadProducts(request):
 
 		if form.is_valid():
 			print('was the loadproudcts form valid?')
-			productID = str(request.POST.get('productID'))
+			productID = str(request.POST.get('product_id'))
 			print('this is productId')
 			print(productID)
 			#update Product Values
-			productName = str(request.POST.get('productName'))
-			productDescr = str(request.POST.get('productDescription'))
-			productPrice = int(request.POST.get('productPrice'))
-			active = bool(request.POST.get('productActive'))
+			productName = str(request.POST.get('product_name'))
+			productDescr = str(request.POST.get('product_description'))
+			productPrice = int(request.POST.get('product_price'))
+			active = bool(request.POST.get('product_active'))
 			print(active)
-			productQuantity = int(request.POST.get('productQuantity'))
+			productQuantity = int(request.POST.get('product_stock_quantity'))
 			#supplies = str(request.POST.get('productSupplier'))
 			#
 			newProduct = Product(product_id=productID, product_name=productName, product_active=active, product_stock_quantity=productQuantity,
