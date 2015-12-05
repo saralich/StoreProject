@@ -36,14 +36,18 @@
 <p/>
 	<center>
 	<form action="/viewAccount/" method = "get" name = "accountPage">
-		{% if request.user.is_authenticated %} 
-			Welcome '{{request.user.username}}'
-			First Name: '{{request.user.user_firstname}}'
-			Last Name: '{{request.user.user_lastname}}'
-			Username: '{{request.user.username}}'
-			Password: <span class="hidden">'{{request.user.password}}'</span>s
-			Email: '{{request.user.user_email}}'
-			Address: '{{request.user.user_address}}'
+		{% if request.user.is_authenticated %}
+			{% if user.is_superuser %}
+				Welcome admin. <br>
+			{% else %}
+			Welcome '{{request.user.username}}' <br>
+			{% endif %}
+			First Name: '{{request.user.user_firstname}}' <br>
+			Last Name: '{{request.user.user_lastname}}' <br>
+			Username: '{{request.user.username}}' <br>
+			Password: <span class="hidden">'{{request.user.password}}'</span> <br>
+			Email: '{{request.user.user_email}}' <br>
+			Address: '{{request.user.user_address}}' <br>
 		{% endif %}
 		<a href = "/login"> LOGIN</a>
 		<a href = "/updateAccountPage"> UPDATE</a>
