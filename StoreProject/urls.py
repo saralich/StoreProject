@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^logout/', 'storeApp.views.logoutPage'),
     url(r'^register/', 'storeApp.views.registerPage'),
     url(r'^home/', 'storeApp.views.homePage', name="home"),
+    url(r'^search/', 'storeApp.views.search'),
     url(r'^account/', 'storeApp.views.accountPage'),
     url(r'^products/', 'storeApp.views.productPage', name ="products"),
     url(r'^contact/', 'storeApp.views.contactPage', name = "contact"),

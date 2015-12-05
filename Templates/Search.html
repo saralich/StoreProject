@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang = "en">
+<head>
+	<link rel="stylesheet" type="text/css" href="/static/project.css"/>
+	<title>BROWSE</title>
+
+	<p style = "letter-spacing:8px"> 
+		<h3> 
+			<a href="/home"> <img src = "/static/Bows.png" style = "vertical-align:middle" height="100" />BOWS AND BOTS</a> 
+				
+			<div style = "float:right; font-family: Helvetica"> </div>
+		</h3>
+	</p>
+	<h2>
+		<form action = "/search/" method = "get" name = "search">
+			<input type = "Text" name = "q" id = "id_q" value = "{{query}}" placeholder="Search..." required/>
+			<input type = "Submit" name = "search" value = "Search"/>
+		</form>
+	</h2>
+</head>
+</html>
