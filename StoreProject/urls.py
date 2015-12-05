@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^products/', 'storeApp.views.productPage', name ="products"),
     url(r'^contact/', 'storeApp.views.contactPage', name = "contact"),
     url(r'^updateAccount/', 'storeApp.views.updateAccountPage'),
-    url(r'^deleteAccount/', 'storeApp.views.deleteAccountPage'),
+    url(r'^deleteAccount/', 'storeApp.views.deleteAccount'),
     url(r'^loadProducts/', 'storeApp.views.loadProducts')
 ]
 

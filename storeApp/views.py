@@ -92,10 +92,41 @@ def updateAccountPage(request):
 	message = "Update your information below."
 	return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
 
-def deleteAccountPage(request):
-	homePage = loader.get_template('SignIn.html')
-	context = RequestContext(request)
-	return HttpResponse(homePage.render(context))
+def deleteAccount(request):
+	#make sure they logged in
+	currentUser = request.user;
+	if currentUser.is_authenticated():
+		doubleCheck = ""
+
+		if request.method == 'POST':
+			form = DeleteAccountForm(request.POST)
+
+			if form.is_valid():
+
+				#doubleCheck should be the users password
+				doubleCheck = request.POST.get('doubleCheck')
+
+				#grab user we are deleting
+				userToDelete = User.objects.get(username= currentUser.username)
+
+				if doubleCheck == currentUser.password:
+					message = "Successfully deleted account!"
+					print("Account deleted")
+
+					User.objects.filter(username = currentUser.username).delete()
+					return render(request, 'DeleteAccount.html', {'form': form, 'state':message})
+				else:
+					message = "Your password was entered incorrectly to delete your account"
+					return render(request, 'DeleteAccount.html', {'form':form, 'state':message})
+			else:
+				print("delete account form was invalid")
+				form = DeleteAccountForm()
+				return render(request, 'DeleteAccount.html' )
+	else:
+		form = SignInForm()
+		message = "You cannot delete your account because you are not logged in!"
+		return render(request, 'SignIn.html', {'form':form, 'state':message})
+
 
 def logoutPage(request):
 	try:
