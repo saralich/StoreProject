@@ -46,14 +46,45 @@ def browse(request):
 
 #@login_required(login_url='/login')
 def accountPage(request):
-	homePage = loader.get_template('SignIn.html')
+	accountPage = loader.get_template('UserAccount.html')
 	context = RequestContext(request)
 	return HttpResponse(homePage.render(context))
 
 def updateAccountPage(request):
-	homePage = loader.get_template('SignIn.html')
-	context = RequestContext(request)
-	return HttpResponse(homePage.render(context))
+	password = passwordCheck = email = address = ''
+	if request.method == 'POST':
+		if 'updateUser' in request.POST:
+			form = UpdateAccountForm(request.POST)
+
+			if form.is_valid():
+				print('update form valid')
+				password = request.POST.get('password')
+				passwordCheck = request.POST.get('passwordCheck')
+				email = request.POST.get('email')
+				address = request.POST.get('address')
+				print('Password was updated')
+				print(email)
+				print(address)
+				user = authenticate(password = password, passwordChekc = passwordCheck, user_email = email, user_address = address)
+				if password != passwordCheck:
+					print('passwords didnt match')
+					message = "Your passwords did not match, please re-enter matching passwords"
+					return render(request, 'UpdateAccount.html',{'form':form,'state':message})
+				else:
+					print('information updated successfully')
+					message = "Your information has been successfully updated"
+					return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
+			else:
+				print('else was triggered')
+				form = UpdateAccountForm()
+		else:
+			print('else was triggered')
+			form = UpdateAccountForm()
+	else:
+		print('else was triggered')
+		form = UpdateAccountForm()
+	message = "Update your information below."
+	return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
 
 def deleteAccountPage(request):
 	homePage = loader.get_template('SignIn.html')

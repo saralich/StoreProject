@@ -32,36 +32,22 @@
 </head>
 <body>
 <p/>
-
 	<center>
-	
-	<form action="/login/" method = "post" name = "loginUser">
-	
-	{% csrf_token %}
-
-	{% if next %}
-    <input type="hidden" name="next" value="{{ next }}"/>
-    {% endif %}
-
-		{{ form.non_field_errors}}
-		<div>
-          {{ form.username.errors }}
-          {{form.username.labeltag}}
-          <label for = "Username">Username</label>
-          {{ form.username}}
-        </div>
-
-		<div>
-          {{ form.password.errors }}
-          {{ from.password.labeltag}}
-          <label for="Password">Password</label>
-          {{ form.password}}
-        </div>
-
-        <input type="Submit" name="loginUser" value="Login"/>
-	
-
-		</form>
+	<form action="/viewAccount/" method = "get" name = "accountPage">
+		{% if request.user.is_authenticated %} 
+			Welcome '{{request.user.username}}'
+			First Name: '{{request.user.user_firstname}}'
+			Last Name: '{{request.user.user_lastname}}'
+			Username: '{{request.user.username}}'
+			Password: <span class="hidden">'{{request.user.password}}'</span>s
+			Email: '{{request.user.user_email}}'
+			Address: '{{request.user.user_address}}'
+		{% else %}
+			<a href = "/SignIn.html">Log In</a>
+		{% endif %}
+		<input type = "Submit" name = "updateUser" value = "Update" />
+		<input type = "Submit" name = "deleteUser" value = "Delete"/>
+	</form>
 		</center>
 <p/>
 <center>

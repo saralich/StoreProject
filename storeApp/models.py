@@ -27,7 +27,6 @@ class User(models.Model):
 	def __unicode__(self):
 		return self.username
 	user_is_staff = models.BooleanField(default=True, blank = False)
-	
 	pass
 
 #supplier entity
@@ -57,7 +56,6 @@ class Order(models.Model):
 	def __unicode__(self):
 		return self.order_id
 	pass
-
 
 #product entity
 class Product(models.Model):
@@ -90,11 +88,8 @@ class Product(models.Model):
 	#	return '%s' % (self.supplies)
 	#contains = models.ForeignKey(Contains, editable=False, default = 1)
 	#def __unicode__(self):
-	#	return '%s' % (self.contains)
-		
+	#	return '%s' % (self.contains)	
 	pass
-
-
 
 class Contains(models.Model):
 	stock = models.IntegerField()
