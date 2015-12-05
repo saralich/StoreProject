@@ -7,19 +7,30 @@
 	<p style = "letter-spacing:8px"> 
 		<h3> 
 			<a href="/home"> <img src = "/static/Bows.png" style = "vertical-align:middle" height="100" />BOWS AND BOTS</a> 
-				
-			<div style = "float:right; font-family: Helvetica"> </div>
-		</h3>
-	</p>
+			<div style = "float:right; font-family: Helvetica">
+
+			<a href="/account" style = "float:right; font-size:15px; padding:8px"> ACCOUNT</a> 
+
+			<a href="linkedin.com" style = "float:right; font-size:15px; padding: 8px"> CART</a>
+
+			<a href="/home" style="float:right; font-size:15px; padding:8px"> HOME</a>
+		</h3>	
+	</p> 
+
+	<line style = "letter-spacing:0px"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line>	
+	
+	<center><h1 style = "vertical-align:middle; letter-spacing: 25px"> SEARCH <h1></center>
 	<center>
 	<h2>
 		<form action = "/search/" method = "get" name = "search">
 			<input type = "Text" name = "q" id = "id_q" value = "{{query}}" placeholder="Search..." required/>
 			<input type = "Submit" name = "search" value = "Search"/>
+			<input type = "Checkbox" id = "sorted" value = "Sort By Price" onclick = ""> SORT BY PRICE<br>
 		</form>
 	</h2>
-	<div>
-	{% if results %}
+	<div ng-hide = "">
+		{% if results %}
+		{{results}}
 		<table style = "padding: 8px; letter-spacing: 8px; font-size: 15px" id = "Products">
 		<tr style = "font: bold">
 			<tr>ID</tr>

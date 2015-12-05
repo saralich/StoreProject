@@ -42,10 +42,13 @@ def search(request):
 	if query:
 		results = Product.objects.order_by('product_name')
 		results = results.filter(**{'product_name__icontains':str(query)})
+		results_by_price = Product.objects.order_by('product_price')
+		results_by_price = results_by_price.filter(**{'product_name__icontains':str(query)})
 	else:
 		results = None
+		results_by_price = None
 	context = RequestContext(request)
-	return render_to_response('Search.html',{'results':results}, context_instance = context)
+	return render_to_response('Search.html',{'results':results, 'results_by_price':results_by_price}, context_instance = context)
 
 #@login_required(login_url='/login')
 def accountPage(request):
