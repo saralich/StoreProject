@@ -32,7 +32,9 @@ urlpatterns = [
     url(r'^contact/', 'storeApp.views.contactPage', name = "contact"),
     url(r'^updateAccount/', 'storeApp.views.updateAccountPage'),
     url(r'^deleteAccount/', 'storeApp.views.deleteAccount'),
-    url(r'^loadProducts/', 'storeApp.views.loadProducts')
+    url(r'^loadProducts/', 'storeApp.views.loadProducts'),
+    url(r'^changeOrder/', 'storeApp.views.changeOrder'),
+    url(r'^makeOrder/', 'storeApp.views.makeOrder')
 ]
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns

@@ -95,7 +95,7 @@ def updateAccountPage(request):
 		message = "Update your information below."
 		return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
 
-def makeOrder(request):
+def changeOrder(request):
 	#find the product the user wenats to order
 	productName = request.GET.get('productName')
 	validProduct = True
@@ -124,7 +124,9 @@ def makeOrder(request):
 			orderList = []
 
 	else:
-
+		hi = request.GET.get('quantity')
+		print('this is hi')
+		print(hi)
 		if not int(request.GET.get('quantity')) is 0:
 			productsInOrder = None
 
@@ -172,7 +174,95 @@ def makeOrder(request):
 	context = RequestContext(request)
 	return render_to_response()
 
+'''
+def makeOrder(request):
+		#find the product the user wenats to order
+	if user.is_authenticated():
+		#Gets those products from the order
+		if request.GET.get('productsInOrderByID'):
+			stringOfProductIDs = request.GET.get('productsInOrderByID')
+			#array of products, parsed from list
+			arrayOfProductIDs = stringOfProductIDs.replace("[", "").replace("]","")
+			productIDsInOrder = []
+			while "'" in arrayOfProductIDs:
+				pIDinstance = find_between(arrayOfProductIDs, "'", "'")
+				productIDsInOrder.append(Product.objects.get(product_id=pIDinstance))
+				arrayOfProductIDs = arrayOfProductIDs.replace("'", "", 2);
 
+		#create A new order, add it to 
+		newOrder = Order()
+		#max + 1 of all current orders
+		dictObject = Order.objects.all().aggregate(Max('order_id'))
+		maxID = dictObject['order_id__max']
+		if not maxID:
+			maxID = 0;
+		newOrder.order_id = int(maxID) + 1
+		newOrder.order_date = str(datetime.date.today())
+		newOrder.order_paid = request.GET.get('price_of_order')
+		newOrder.orders = User.objects.get(user_name=activeUser)
+
+		quantity = int(request.GET.get('quantity'))
+		
+		orderContains = Contains.objects.create(quantity=quantity)
+
+		stringOfProductIDs = request.GET.get('productsInOrderByID')
+		#array of products, parsed from list
+		arrayOfProductIDs = stringOfProductIDs.replace("[", "").replace("]","")
+
+		# goes through products. It works, at least for one of them
+		#works for all but one
+		while "'" in arrayOfProductIDs:
+			pIDinstance = find_between(arrayOfProductIDs, "'", "'")
+			orderProduct = Product.objects.get(product_id=pIDinstance)
+			productCount = orderProduct.product_stock_quantity
+			# Decrement product quantity and check for low stock
+			#productCount = orderProduct.get_field('product_stock_quantity')
+			print("producCount: " + str(productCount))
+			print("quantity: " + str(quantity))
+			if quantity > productCount:
+				print("Log: Error: no overselling allowed")
+				state ="Insufficient product stock, please wait for staff to restock"
+				email = EmailMessage(
+					'Webstore: Product stock low',
+					(str(orderProduct.product_name) + "stock count is low, please restock"),
+					to = [str(request.session['email'])]
+				)
+				email.send()
+				return render(request,"order.html",{"state":state})
+			elif productCount < 10:
+				# Send severe warning to staff 
+				print("Log: severe warning")
+			elif productCount < 100:
+				# Send warning to staff
+				print("Log: minor warning")
+
+			#orderProduct = Product(product_id = int(pIDinstance),product_stock_quantity = int(productCount - 1))
+			
+
+			#Product.objects.filter(product_id=pIDinstance).update(product_stock_quantity = productCount - 1)
+			orderProduct.product_stock_quantity = (productCount -1)
+			orderProduct.save()
+			print(Product.objects.get(product_id=pIDinstance).product_stock_quantity)
+
+			orderContains.productsLONGNAME.add(orderProduct)
+			arrayOfProductIDs = arrayOfProductIDs.replace("'", "", 2);
+
+			orderProduct.save()
+
+		orderContains.save()
+
+		newOrder.contains = orderContains
+
+		newOrder.save()	
+	else:
+		message = "you are not logged in, log in to make an order"
+		return render(request, 'SignIn.html')
+
+ 
+ 	orders = Order.objects.order_by('-order_date').filter(orders__user_name__in = activeUser)
+ 	context = RequestContext(request)
+	return render_to_response('orderPlaced.html', {"yourOrder" : newOrder, "productIDsInOrder" : productIDsInOrder, "orders" : orders, }, context_instance=context)#
+'''
 
 def deleteAccount(request):
 	#admin capabilities
