@@ -27,6 +27,7 @@ class User(models.Model):
 	def __unicode__(self):
 		return self.username
 	user_is_staff = models.BooleanField(default=True, blank = False)
+	
 	pass
 
 #supplier entity
@@ -41,21 +42,8 @@ class Supplier(models.Model):
 	pass
 	#product = models.ManyToManyField(Product)
 
-#order entity
-class Order(models.Model):
-	order_date = models.DateField()
-	def __unicode__(self):
-		return self.order_date
-	order_paid = models.BooleanField(default=False)
-	def __unicode__(self):
-		return self.order_paid
-	orders = models.ForeignKey(User, editable = False, default = 1)
-	def __str__(self):
-		return '%s' % (self.orders)
-	order_id = models.AutoField(primary_key=True)
-	def __unicode__(self):
-		return self.order_id
-	pass
+
+
 
 #product entity
 class Product(models.Model):
@@ -88,8 +76,11 @@ class Product(models.Model):
 	#	return '%s' % (self.supplies)
 	#contains = models.ForeignKey(Contains, editable=False, default = 1)
 	#def __unicode__(self):
-	#	return '%s' % (self.contains)	
+	#	return '%s' % (self.contains)
+		
 	pass
+
+
 
 class Contains(models.Model):
 	stock = models.IntegerField()
@@ -99,3 +90,22 @@ class Contains(models.Model):
 	def __unicode__(self):
 		return '%s' % (self.products)
 
+#order entity
+class Order(models.Model):
+	contains = models.ForeignKey(Contains, null=True, blank = True)
+	def __unicode__(self):
+		return '%s' % (self.contains)
+
+	order_date = models.DateField()
+	def __unicode__(self):
+		return self.order_date
+	order_paid = models.DecimalField(max_digits = 19, decimal_places= 2)
+	def __unicode__(self):
+		return self.order_paid
+	orders = models.ForeignKey(User, editable = False, default = 1)
+	def __str__(self):
+		return '%s' % (self.orders)
+	order_id = models.AutoField(primary_key=True)
+	def __unicode__(self):
+		return self.order_id
+	pass
