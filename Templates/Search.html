@@ -2,7 +2,7 @@
 <html lang = "en">
 <head>
 	<link rel="stylesheet" type="text/css" href="/static/project.css"/>
-	<title>BROWSE</title>
+	<title>SEARCH</title>
 
 	<p style = "letter-spacing:8px"> 
 		<h3> 
@@ -19,7 +19,7 @@
 
 	<line style = "letter-spacing:0px"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line>	
 	
-	<center><h1 style = "vertical-align:middle; letter-spacing: 25px"> SEARCH <h1></center>
+	<center><h1 style = "vertical-align:middle; letter-spacing: 25px"> SEARCH<h1></center>
 	<center>
 	<h2>
 		<form action = "/search/" method = "get" name = "search">
@@ -28,7 +28,7 @@
 			<input type = "Checkbox" id = "sorted" value = "Sort By Price" onclick = ""> SORT BY PRICE<br>
 		</form>
 	</h2>
-	<div ng-hide = "">
+	<div>
 		{% if results %}
 		{{results}}
 		<table style = "padding: 8px; letter-spacing: 8px; font-size: 15px" id = "Products">

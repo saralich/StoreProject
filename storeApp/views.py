@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import RegisterForm, SignInForm, ProductForm
+from .forms import RegisterForm, SignInForm, ProductForm, DeleteAccountForm, UpdateAccountForm
 from .models import User, Order, Supplier, Product
 
 #@login_required(login_url='/login')
@@ -58,15 +58,11 @@ def accountPage(request):
 	return HttpResponse(accountPage.render(context))
 
 def updateAccountPage(request):
-	#admin capabilities
-	permission = Permission.objects.create(codename = 'updateUser', name = 'Update User', content_type = content_type)
-	if user.is_superuser:
-		user.permissions.add(permission)
-	else: 
-		#normal user
+	#admin capabilities & normal users
+	if request.user.is_superuser or request.user.is_authenticated:
 		password = passwordCheck = email = address = ''
 		if request.method == 'POST':
-			if 'updateUser' in request.POST:
+			if 'updateAccount' in request.POST:
 				form = UpdateAccountForm(request.POST)
 
 				if form.is_valid():
@@ -78,7 +74,7 @@ def updateAccountPage(request):
 					print('Password was updated')
 					print(email)
 					print(address)
-					user = authenticate(password = password, passwordChekc = passwordCheck, user_email = email, user_address = address)
+					user = authenticate(password = password, passwordCheck = passwordCheck, user_email = email, user_address = address)
 					if password != passwordCheck:
 						print('passwords didnt match')
 						message = "Your passwords did not match, please re-enter matching passwords"
@@ -100,40 +96,41 @@ def updateAccountPage(request):
 		return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
 
 def deleteAccount(request):
-	#make sure they logged in
-	currentUser = request.user;
-	if currentUser.is_authenticated():
-		doubleCheck = ""
+	#admin capabilities
+	if request.user.is_superuser or request.user.is_authenticated:
+		#make sure they logged in
+		currentUser = request.user;
+		if currentUser.is_authenticated():
+			doubleCheck = ""
 
-		if request.method == 'POST':
-			form = DeleteAccountForm(request.POST)
+			if request.method == 'POST':
+				form = DeleteAccountForm(request.POST)
 
-			if form.is_valid():
+				if form.is_valid():
 
-				#doubleCheck should be the users password
-				doubleCheck = request.POST.get('doubleCheck')
+					#doubleCheck should be the users password
+					doubleCheck = request.POST.get('doubleCheck')
 
-				#grab user we are deleting
-				userToDelete = User.objects.get(username= currentUser.username)
+					#grab user we are deleting
+					userToDelete = User.objects.get(username= currentUser.username)
 
-				if doubleCheck == currentUser.password:
-					message = "Successfully deleted account!"
-					print("Account deleted")
+					if doubleCheck == currentUser.password:
+						message = "Successfully deleted account!"
+						print("Account deleted")
 
-					User.objects.filter(username = currentUser.username).delete()
-					return render(request, 'DeleteAccount.html', {'form': form, 'state':message})
+						User.objects.filter(username = currentUser.username).delete()
+						return render(request, 'DeleteAccount.html', {'form': form, 'state':message})
+					else:
+						message = "Your password was entered incorrectly to delete your account"
+						return render(request, 'DeleteAccount.html', {'form':form, 'state':message})
 				else:
-					message = "Your password was entered incorrectly to delete your account"
-					return render(request, 'DeleteAccount.html', {'form':form, 'state':message})
-			else:
-				print("delete account form was invalid")
-				form = DeleteAccountForm()
-				return render(request, 'DeleteAccount.html' )
-	else:
-		form = SignInForm()
-		message = "You cannot delete your account because you are not logged in!"
-		return render(request, 'SignIn.html', {'form':form, 'state':message})
-
+					print("delete account form was invalid")
+					form = DeleteAccountForm()
+					return render(request, 'DeleteAccount.html' )
+		else:
+			form = SignInForm()
+			message = "You cannot delete your account because you are not logged in!"
+			return render(request, 'SignIn.html', {'form':form, 'state':message})
 
 def logoutPage(request):
 	try:
