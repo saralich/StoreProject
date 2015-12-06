@@ -23,14 +23,13 @@
 	<center>
 	<h2>
 		<form action = "/search/" method = "get" name = "search">
-			<input type = "Text" name = "q" id = "id_q" value = "{{query}}" placeholder="Search..." required/>
+			<input type = "Text" name = "q" id = "id_q" value = "{{ query }}" placeholder="Search..." required/>
 			<input type = "Submit" name = "search" value = "Search"/><br>
-			<input type = "Checkbox" id = "sorted" value = "Sort By Price" onclick = ""> SORT BY PRICE<br>
+			<input type = "Checkbox" id = "sorted" name = "sort" value = "{{ query }}" onclick = ""> SORT BY PRICE<br>
 		</form>
 	</h2>
 	<div>
-		{% if results %}
-		{{results}}
+	{% if results %}
 		<table style = "padding: 8px; letter-spacing: 8px; font-size: 15px" id = "Products">
 		<tr style = "font: bold">
 			<tr>ID</tr>

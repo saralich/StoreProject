@@ -11,11 +11,12 @@ from django.core.urlresolvers import reverse
 from django.db.models import Max
 import datetime
 from django.contrib import auth
-
+import models
+from django.db import models
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import RegisterForm, SignInForm, ProductForm, DeleteAccountForm, UpdateAccountForm
-from .models import User, Order, Supplier, Product
+from .models import User, Order, Supplier, Product, Contains
 
 #@login_required(login_url='/login')
 def homePage(request):
@@ -31,27 +32,31 @@ def contactPage(request):
 
 def productPage(request):
 	#return HttpResponse("Webstore user account page")
-	productPage = loader.get_template('Products.html')
+	products = request.GET.get('p')
+	products = Product.objects.order_by('product_price')
 	context = RequestContext(request)
-	return HttpResponse(productPage.render(context))
+	return render_to_response('Products.html', {'products': Product.objects.all()})
 
 def search(request):
 	query = request.GET.get('q')
+	price = request.GET.get('sort')
 	try:
 		query = str(query)
 	except ValueError:
 		query = None
 		results = None
 	if query:
-		results = Product.objects.order_by('product_name')
-		results = results.filter(**{'product_name__icontains':str(query)})
-		results_by_price = Product.objects.order_by('product_price')
-		results_by_price = results_by_price.filter(**{'product_name__icontains':str(query)})
+		if price == None:
+			results = Product.objects.order_by('product_name')
+			results = results.filter(**{'product_name__icontains':str(query)})
+		else:
+			results = Product.objects.order_by('product_price')
+			results = results.filter(**{'product_name__icontains':str(query)})
 	else:
 		results = None
-		results_by_price = None
+		results = None
 	context = RequestContext(request)
-	return render_to_response('Search.html',{'results':results, 'results_by_price':results_by_price}, context_instance = context)
+	return render_to_response('Search.html',{'results':results}, context_instance = context)
 
 #@login_required(login_url='/login')
 def accountPage(request):
