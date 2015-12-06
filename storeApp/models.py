@@ -32,9 +32,9 @@ class User(models.Model):
 
 #supplier entity
 class Supplier(models.Model):
-	supplier_id = models.AutoField(primary_key=True)
+	supplies_id = models.AutoField(primary_key=True, editable = False, default = 1)
 	def __unicode__(self):
-		return self.supplier_id
+		return self.supplies_id
 	supplier_name = models.CharField(max_length=100)
 	def __unicode__(self):
 		return self.supplier_name
@@ -71,15 +71,13 @@ class Product(models.Model):
 	product_name = models.CharField(max_length=50)
 	def __unicode__(self):
 		return self.product_name
-	#supplies = models.ForeignKey(Supplier, editable=False, default = 1)
-	#def __unicode__(self):
-	#	return '%s' % (self.supplies)
+	supplier = models.ForeignKey(Supplier, editable=False, default = 1)
+	def __unicode__(self):
+		return '%s' % (self.supplier_id)
 	#contains = models.ForeignKey(Contains, editable=False, default = 1)
 	#def __unicode__(self):
 	#	return '%s' % (self.contains)
-	supplies = models.ForeignKey(Supplier, editable = False, default = 1)
-	def __unicode__(self):
-		return '%s' % (self.supplies)
+
 	pass
 
 
