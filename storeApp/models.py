@@ -32,7 +32,7 @@ class User(models.Model):
 
 #supplier entity
 class Supplier(models.Model):
-	supplies_id = models.AutoField(primary_key=True, editable = False, default = 1)
+	supplies_id = models.AutoField(primary_key=True)
 	def __unicode__(self):
 		return self.supplies_id
 	supplier_name = models.CharField(max_length=100)
@@ -71,7 +71,7 @@ class Product(models.Model):
 	product_name = models.CharField(max_length=50)
 	def __unicode__(self):
 		return self.product_name
-	supplier = models.ForeignKey(Supplier, editable=False, default = 1)
+	supplier = models.ForeignKey(Supplier)
 	def __unicode__(self):
 		return '%s' % (self.supplier_id)
 	#contains = models.ForeignKey(Contains, editable=False, default = 1)
