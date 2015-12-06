@@ -9,5 +9,4 @@ urlpatterns = [
     url(r'^$', views.homePage, name='homePage'), 
     url(r'^$', views.contactPage, name ='contactPage'),
     url(r'^$', views.productPage, name = 'productPage'),
-
 ]

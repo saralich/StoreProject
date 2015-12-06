@@ -2,20 +2,18 @@
 <html lang = "en">
 <head>
 	<link rel="stylesheet" type="text/css" href="/static/project.css"/>
-	<title>Products</title>
+	<title>PRODUCTS</title>
 
 	<p style = "letter-spacing:8px"> 
 	<h3> 
 		<a href={% url 'storeApp.views.homePage' %}> <img src = "/static/Bows.png" style = "vertical-align:middle" height="100" />BOWS AND BOTS</a> 
 			
-		<form style = "float:right; font-family: Helvetica">
-                                <input type="text" placeholder="Search..." required>
-                                <input type="button" value="Search">
-		</form>
 		<!--<a href = "KellyWebsiteNew.html" style = "color: #2f4f4f;">HOME</a>-->
 		<a href= "/account" style = "float:right; font-size:15px; padding:8px"> ACCOUNT</a> 
 
 		<a href="Cart.html" style = "float:right; font-size:15px; padding: 8px"> CART</a> 
+
+		<a href="/search" style="float:right; font-size:15px; padding:8px"> SEARCH</a>
 	</h3>	</p> 
 
 			<line style = "letter-spacing:0px"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line>	
@@ -31,7 +29,56 @@
 	<line style = "letter-spacing:0"> ________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</line>
 </head>
 <body>
-	<div class="img">
+<!-- <p/>
+	<center><h2 style = "color: #FF69B4">{{state}}</h2></center>
+	<center>
+	<form action="/products/" method = "get" name = "productsPage">
+
+	{% if request.session.name.exists %}
+		Welcome {{request.session.name}}
+		<p/>
+		<p/>
+		<a href = "/updateAccount"> UPDATE</a>
+		<a href = "/deleteAccount"> DELETE</a>
+		<a href = "/logout"> LOGOUT </a>
+	{% else %}
+	<h1>Login or register for an account to view your account!</h1>
+		<hover><a href = "/register"> REGISTER</a></hover>
+		<p/>
+		<a href = "/login"> LOGIN </a>
+	{% endif %}
+	</form>
+		</center>
+<p/>
+<center>
+		<a href = "/register" style = "color: blue">Register for account?</a>
+	</center> -->
+	<center>
+		<form action = "/products/" method = "get" name = "productPage">
+		{% if products %}
+			<table style = "padding: 15px; letter-spacing: 8px; font-size: 15px" id = "Products" name = "p">
+			<tr style = "font: bold">
+				<tr>ID</tr>
+				<tr>Name</tr>
+				<tr>Description</tr>
+				<tr>Price</tr>
+				<tr>Active</tr>
+				<tr>In Stock</tr>
+			</tr>
+			{% for p in products %}
+			<tr>
+				<td> {{p.product_id}} </td>
+				<td> {{p.product_name}} </td>
+				<td> {{p.product_description}} </td>
+				<td> {{p.product_price}} </td>
+				<td> {{p.product_active}} </td>
+				<td> {{p.product_stock_quality}} </td>
+			</tr>
+			{% endfor %}
+			</table>
+		{% endif %}
+	</center>
+	<!-- <div class="img">
 		<img src="/static/CodeLikeAGirl.jpg" width="400" height="400"/>
 		<div class="desc">"Code Like A Girl" T-Shirt || $15.00 <br>
 		<button type="button" onclick="alert('This item has been added to your cart.')">Add To Cart</button></div>
@@ -60,6 +107,6 @@
 		<img src="/static/nails.JPG" width="400" height="400"/>
 		<div class="desc">Motherboard Nail Art || $10.00 <br>
 		<button type="button" onclick="alert('This item has been added to your cart.')">Add To Cart</button></div>
-	</div>
+	</div> -->
 </body>
 </html>
