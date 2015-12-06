@@ -10,6 +10,7 @@ from django.views.generic import FormView
 from django.core.urlresolvers import reverse
 from django.db.models import Max
 import datetime
+from django.contrib import auth
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -59,6 +60,11 @@ def accountPage(request):
 	return HttpResponse(accountPage.render(context))
 
 def updateAccountPage(request):
+	try:
+		active = request.session['username']
+	except KeyError:
+		return loginPage(request)
+
 	password = passwordCheck = email = address = ''
 	#admin capabilities & normal users
 	#if request.user.is_superuser or request.user.is_authenticated:
@@ -287,6 +293,11 @@ def makeOrder(request):
 
 
 def deleteAccount(request):
+	try:
+		active = request.session['username']
+	except KeyError:
+		return loginPage(request)
+
 	#admin capabilities
 	if request.user.is_superuser or request.user.is_authenticated:
 		#make sure they logged in
@@ -310,6 +321,7 @@ def deleteAccount(request):
 						print("Account deleted")
 
 						User.objects.filter(username = currentUser.username).delete()
+						del request.session['username']
 						return render(request, 'DeleteAccount.html', {'form': form, 'state':message})
 					else:
 						message = "Your password was entered incorrectly to delete your account"
@@ -325,8 +337,8 @@ def deleteAccount(request):
 
 def logoutPage(request):
 	try:
-		#del request.session['username']
-		logout(request)
+		del request.session['username']
+		#logout(request)
 		print("logout worked")
 	except KeyError:
 		print("etnered except")
@@ -340,6 +352,12 @@ def logoutPage(request):
 def loginPage(request):
 	#initialize 
 	username = password = ''
+	try:
+			del request.session['username']
+			del request.session['staff']
+			del request.session['email']
+	except KeyError:
+		pass
 
 	if request.method == 'POST':
 		if 'loginUser' in request.POST:
@@ -353,31 +371,30 @@ def loginPage(request):
 				password = request.POST.get('password')
 				print(username)
 				print(password)
-				user = authenticate(username = username, password = password)
-
+				user = User.objects.get(username = username)
+				#if User.objects.filter(username = username).exists()
+				#user = auth.authenticate(username = "pocathoughts", password = "jkjkjkjk")
+				print('this is username and password')
+				print(user.password)
+				print(password)
 				if user:
-
-					if user.is_active:
-						login(request, user)
-						return render(request, 'HomePage.html')
+					if user.password == password:
+						message = "You've logged in!"
+						request.session['staff']=user.user_is_staff
+						request.session['username'] = user.username
+						request.session['email'] = user.user_email
+						#HttpResponseRedirect('HomePage.html')
+						return render(request, 'UserAccount.html', {'state': message})
 					else:
-						return HttpResponse("Your account is disabled")
-				#check and see if the username is valid before moving forward
-				#if User.objects.filter(user_name = username).exists():
-					#if it exists pull it from the database
-				#	specificUser = User.objects.get(user_name = username)
-
-					#check to see if the passwrods match up
-				#	if specificUser.user_password == password:
-				#		message = "You successfully logged in!"
-				#		request.session['username'] = specificUser.user_name
-				#		print('Login successful')
-						#need to authenticate beforehand
-						#login(request, specificUser)
-				#		return render(request, 'HomePage.html')
-				#	else:
-				#		message = "Incorrect username and password!"
-				#		print("Incorrect username and password!")	
+						#password doesnt match
+						print('invalid password')
+						message="Your password did not match your username"
+						return render(request, "SignIn.html", {'form': form, 'state':message})
+					#if user.is_active:
+					#	login(request, user)
+					#	return render(request, 'HomePage.html')
+					#else:
+					#	return HttpResponse("Your account is disabled")	
 				else:
 					message = "Invalid username."
 					print("Invalid username")

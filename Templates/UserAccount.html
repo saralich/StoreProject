@@ -34,29 +34,23 @@
 </head>
 <body>
 <p/>
+	<center><h2 style = "color: #FF69B4">{{state}}</h2></center>
 	<center>
 	<form action="/viewAccount/" method = "get" name = "accountPage">
-		{% if request.user.is_authenticated %}
-			{% if user.is_superuser %}
-				Welcome admin. <br>
-			{% else %}
-			Welcome '{{request.user.username}}' <br>
-			{% endif %}
-			First Name: '{{request.user.user_firstname}}' <br>
-			Last Name: '{{request.user.user_lastname}}' <br>
-			Username: '{{request.user.username}}' <br>
-			Password: <span class="hidden">'{{request.user.password}}'</span> <br>
-			Email: '{{request.user.user_email}}' <br>
-			Address: '{{request.user.user_address}}' <br>
-		{% endif %}
-		{% if not request.user.is_authenticated %}
-		<a href = "/login"> LOGIN</a>
-		{% endif %}
+
+	{% if request.session.name.exists %}
+		Welcome {{request.session.name}}
+		<p/>
+		<p/>
 		<a href = "/updateAccount"> UPDATE</a>
 		<a href = "/deleteAccount"> DELETE</a>
-		{% if request.user.is_authenticated %}
 		<a href = "/logout"> LOGOUT </a>
-		{% endif %}
+	{% else %}
+	<h1>Login or register for an account to view your account!</h1>
+		<hover><a href = "/register"> REGISTER</a></hover>
+		<p/>
+		<a href = "/login"> LOGIN </a>
+	{% endif %}
 	</form>
 		</center>
 <p/>
