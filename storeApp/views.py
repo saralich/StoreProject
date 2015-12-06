@@ -19,7 +19,6 @@ def homePage(request):
 	homePage = loader.get_template('HomePage.html')
 	context = RequestContext(request)
 	return HttpResponse(homePage.render(context))
-		
 
 def contactPage(request):
 	print('contact page made it')
@@ -95,85 +94,6 @@ def updateAccountPage(request):
 		message = "Update your information below."
 		return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
 
-def makeOrder(request):
-	#find the product the user wenats to order
-	productName = request.GET.get('productName')
-	validProduct = True
-
-	try:
-		productToBuy = Product.objects.get(product_name = productName)
-	except:
-		validProduct = False
-
-	#checking to see if the store even carries that product
-	if validProduct:
-		enteredProducts = request.GET.get('orderList')
-
-		if enteredProducts:
-			temp = enteredProducts
-			temp = temp.replace("'", "")
-			productsInOrder = [e.encode('utf-8') for e in temp.strip('[]').split(',')];
-
-			#for the initial list creation
-			#anohter precaution in case 
-			if 'None' in str(request.GET.get('orderList')):
-				orderList = []
-
-		else:
-			#creates the initial list to hold the order
-			orderList = []
-
-	else:
-
-		if not int(request.GET.get('quantity')) is 0:
-			productsInOrder = None
-
-		else:
-			temp = request.GET.get('productsInOrder')
-			temp = temp.replace("'", "")
-			orderList = [e.encode('utf-8') for e in temp.strip('[]').split(',')]
-
-	if validProduct:
-	################### PART 2 ##################	
-		#make sure they entered a valid quantity
-		numToOrder = int(request.GET.get('quantity')) 
-		
-		#if there is at least one item already in the order
-		if numToOrder is not 0:
-
-			productsInOrder.append(str(productToBuy.product_name))
-			quantity = int(request.GET.get('quantity')) + 1
-			totalPrice = int(request.GET.get('price_of_order')) + productToAdd.product_price;
-			message = "product added successfully"
-
-		else: #this is the creation of an order
-			productsInOrder.append(str(productToBuy.product_name))
-			quantity = 1;
-			totalPrice = productToBuy.product_price
-			message = "product added successfully"
-
-	else: 
-		if numToOrder is not 0:
-			totalPrice = request.GET.get('totalPrice')
-
-			message = productName + "does not exist"
-
-			temp = request.GET.get('orderList')
-			temp = temp.replace("'", "")
-			orderList = [e.encode('utf-8') for e in temp.strip('[]').split(',')]
-
-		else:
-			#defaults for blank/failed entries
-			orderList = None
-			totalPrice = 0
-			quantity = 0
-			message = "Your haven't ordered anything!"
-
-	context = RequestContext(request)
-	return render_to_response()
-
-
-
 def deleteAccount(request):
 	#admin capabilities
 	if request.user.is_superuser or request.user.is_authenticated:
@@ -205,7 +125,7 @@ def deleteAccount(request):
 				else:
 					print("delete account form was invalid")
 					form = DeleteAccountForm()
-					return render(request, 'DeleteAccount.html' )
+					return render(request, 'DeleteAccount.html')
 		else:
 			form = SignInForm()
 			message = "You cannot delete your account because you are not logged in!"
