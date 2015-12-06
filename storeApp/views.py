@@ -19,7 +19,6 @@ def homePage(request):
 	homePage = loader.get_template('HomePage.html')
 	context = RequestContext(request)
 	return HttpResponse(homePage.render(context))
-		
 
 def contactPage(request):
 	print('contact page made it')
@@ -95,6 +94,7 @@ def updateAccountPage(request):
 		message = "Update your information below."
 		return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
 
+<<<<<<< HEAD
 def changeOrder(request):
 	#find the product the user wenats to order
 	productName = request.GET.get('productName')
@@ -264,6 +264,8 @@ def makeOrder(request):
 	return render_to_response('orderPlaced.html', {"yourOrder" : newOrder, "productIDsInOrder" : productIDsInOrder, "orders" : orders, }, context_instance=context)#
 '''
 
+=======
+>>>>>>> 985e880febce29bc10ed6daa8f6379df5800b31a
 def deleteAccount(request):
 	#admin capabilities
 	if request.user.is_superuser or request.user.is_authenticated:
@@ -295,7 +297,7 @@ def deleteAccount(request):
 				else:
 					print("delete account form was invalid")
 					form = DeleteAccountForm()
-					return render(request, 'DeleteAccount.html' )
+					return render(request, 'DeleteAccount.html')
 		else:
 			form = SignInForm()
 			message = "You cannot delete your account because you are not logged in!"
