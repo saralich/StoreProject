@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import *
 from django.views.generic import FormView
 from django.core.urlresolvers import reverse
+from django.db.models import Max
+import datetime
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -57,42 +59,56 @@ def accountPage(request):
 	return HttpResponse(accountPage.render(context))
 
 def updateAccountPage(request):
+	password = passwordCheck = email = address = ''
 	#admin capabilities & normal users
+	#if request.user.is_superuser or request.user.is_authenticated:
 	if request.user.is_superuser or request.user.is_authenticated:
-		password = passwordCheck = email = address = ''
-		if request.method == 'POST':
-			if 'updateAccount' in request.POST:
-				form = UpdateAccountForm(request.POST)
+		#make sure they logged in
+		currentUser = request.user;
+		if currentUser.is_authenticated():
 
-				if form.is_valid():
-					print('update form valid')
-					password = request.POST.get('password')
-					passwordCheck = request.POST.get('passwordCheck')
-					email = request.POST.get('email')
-					address = request.POST.get('address')
-					print('Password was updated')
-					print(email)
-					print(address)
-					user = authenticate(password = password, passwordCheck = passwordCheck, user_email = email, user_address = address)
-					if password != passwordCheck:
-						print('passwords didnt match')
-						message = "Your passwords did not match, please re-enter matching passwords"
-						return render(request, 'UpdateAccount.html',{'form':form,'state':message})
+	#if request.user.is_authenticated:
+		
+			if request.method == 'POST':
+				if 'updateAccount' in request.POST:
+					form = UpdateAccountForm(request.POST)
+
+					if form.is_valid():
+						print('update form valid')
+						password = request.POST.get('password')
+						passwordCheck = request.POST.get('passwordCheck')
+						email = request.POST.get('email')
+						address = request.POST.get('address')
+						print('Password was updated')
+						print(email)
+						print(address)
+						user = authenticate(password = password, passwordCheck = passwordCheck, user_email = email, user_address = address)
+						if password != passwordCheck:
+							print('passwords didnt match')
+							message = "Your passwords did not match, please re-enter matching passwords"
+							return render(request, 'UpdateAccount.html',{'form':form,'state':message})
+						else:
+							print('information updated successfully')
+							message = "Your information has been successfully updated"
+							return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
 					else:
-						print('information updated successfully')
-						message = "Your information has been successfully updated"
+						print('else was triggered A')
+						form = UpdateAccountForm()
+						message = "Please Re-Enter information with correct values"
 						return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
 				else:
-					print('else was triggered')
+					print('else was triggered B')
 					form = UpdateAccountForm()
+					return render(request, 'UpdateAccount.html', {'form':form})
 			else:
-				print('else was triggered')
+				print('else was triggered C')
 				form = UpdateAccountForm()
+				return render(request, 'UpdateAccount.html', {'form':form})
 		else:
-			print('else was triggered')
-			form = UpdateAccountForm()
-		message = "Update your information below."
-		return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
+			form = SignInForm()
+			message = "You cannot update your account because you are not logged in!"
+			return render(request, 'SignIn.html', {'form':form, 'state':message})
+
 
 def changeOrder(request):
 	#find the product the user wenats to order
@@ -176,8 +192,9 @@ def changeOrder(request):
 
 def makeOrder(request):
 		#find the product the user wenats to order
-	if user.is_authenticated():
-
+	if request.user.is_authenticated():
+		activeUser = request.user
+		print(activeUser)
 		orderList = request.GET.get('orderList')
 		#Gets those products from the order
 		if orderList:
@@ -186,11 +203,11 @@ def makeOrder(request):
 			productList = orderList.replace("[", "").replace("]","")
 			specificOrder = []
 			while "'" in productList:
-				pIDinstance = find_between(arrayOfProductIDs, "'", "'")
+				pIDinstance = find_between(productList, "'", "'")
 				productIDsInOrder.append(Product.objects.get(product_id=pIDinstance))
-				arrayOfProductIDs = arrayOfProductIDs.replace("'", "", 2);
+				productList = Product.replace("'", "", 2);
 
-		#create A new order, add it to 
+		#temp order to be added
 		newOrder = Order()
 		#max + 1 of all current orders
 		dictObject = Order.objects.all().aggregate(Max('order_id'))
@@ -200,20 +217,23 @@ def makeOrder(request):
 		newOrder.order_id = int(maxID) + 1
 		newOrder.order_date = str(datetime.date.today())
 		newOrder.order_paid = request.GET.get('price_of_order')
-		newOrder.orders = User.objects.get(user_name=activeUser)
+		#get the username to compare
+		activeUsername = activeUser.username
+		print(activeUsername)
+		newOrder.orders = User.objects.get(username= activeUsername)
 
 		quantity = int(request.GET.get('quantity'))
-		
+		print('this is quantity value')
+		print(quantity)
 		orderContains = Contains.objects.create(quantity=quantity)
-
 		stringOfProductIDs = request.GET.get('productsInOrderByID')
 		#array of products, parsed from list
 		arrayOfProductIDs = stringOfProductIDs.replace("[", "").replace("]","")
 
 		# goes through products. It works, at least for one of them
 		#works for all but one
-		while "'" in arrayOfProductIDs:
-			pIDinstance = find_between(arrayOfProductIDs, "'", "'")
+		while "'" in productList:
+			pIDinstance = find_between(productList, "'", "'")
 			orderProduct = Product.objects.get(product_id=pIDinstance)
 			productCount = orderProduct.product_stock_quantity
 			# Decrement product quantity and check for low stock
@@ -256,8 +276,9 @@ def makeOrder(request):
 
 		newOrder.save()	
 	else:
+		form = SignInForm()
 		message = "you are not logged in, log in to make an order"
-		return render(request, 'SignIn.html')
+		return render(request, 'SignIn.html', {'state':message, 'form':form})
 
  
  	orders = Order.objects.order_by('-order_date').filter(orders__user_name__in = activeUser)
