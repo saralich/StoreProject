@@ -94,7 +94,6 @@ def updateAccountPage(request):
 		message = "Update your information below."
 		return render(request, 'UpdateAccount.html',{'form':form, 'state':message})
 
-<<<<<<< HEAD
 def changeOrder(request):
 	#find the product the user wenats to order
 	productName = request.GET.get('productName')
@@ -174,17 +173,19 @@ def changeOrder(request):
 	context = RequestContext(request)
 	return render_to_response()
 
-'''
+
 def makeOrder(request):
 		#find the product the user wenats to order
 	if user.is_authenticated():
+
+		orderList = request.GET.get('orderList')
 		#Gets those products from the order
-		if request.GET.get('productsInOrderByID'):
-			stringOfProductIDs = request.GET.get('productsInOrderByID')
-			#array of products, parsed from list
-			arrayOfProductIDs = stringOfProductIDs.replace("[", "").replace("]","")
-			productIDsInOrder = []
-			while "'" in arrayOfProductIDs:
+		if orderList:
+			#stringOfProductIDs = request.GET.get('productsInOrderByID')
+			#list of products
+			productList = orderList.replace("[", "").replace("]","")
+			specificOrder = []
+			while "'" in productList:
 				pIDinstance = find_between(arrayOfProductIDs, "'", "'")
 				productIDsInOrder.append(Product.objects.get(product_id=pIDinstance))
 				arrayOfProductIDs = arrayOfProductIDs.replace("'", "", 2);
@@ -262,10 +263,8 @@ def makeOrder(request):
  	orders = Order.objects.order_by('-order_date').filter(orders__user_name__in = activeUser)
  	context = RequestContext(request)
 	return render_to_response('orderPlaced.html', {"yourOrder" : newOrder, "productIDsInOrder" : productIDsInOrder, "orders" : orders, }, context_instance=context)#
-'''
 
-=======
->>>>>>> 985e880febce29bc10ed6daa8f6379df5800b31a
+
 def deleteAccount(request):
 	#admin capabilities
 	if request.user.is_superuser or request.user.is_authenticated:
