@@ -77,7 +77,9 @@ class Product(models.Model):
 	#contains = models.ForeignKey(Contains, editable=False, default = 1)
 	#def __unicode__(self):
 	#	return '%s' % (self.contains)
-		
+	supplies = models.ForeignKey(Supplier, editable = False, default = 1)
+	def __unicode__(self):
+		return '%s' % (self.supplies)
 	pass
 
 
