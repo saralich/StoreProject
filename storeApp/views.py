@@ -220,7 +220,7 @@ def makeOrder(request):
 		#get the username to compare
 		activeUsername = activeUser.username
 		print(activeUsername)
-		newOrder.orders = User.objects.get(username= activeUsername)
+		newOrder.orders = User.objects.get(username = activeUsername)
 
 		quantity = int(request.GET.get('quantity'))
 		print('this is quantity value')
@@ -325,10 +325,16 @@ def deleteAccount(request):
 
 def logoutPage(request):
 	try:
-		del request.session['username']
+		#del request.session['username']
+		logout(request)
+		print("logout worked")
 	except KeyError:
+		print("etnered except")
 		pass
-	return HttpResponse("You're logged out.")
+
+	form = SignInForm()
+	message = "You successfully logged out!"
+	return render(request, 'SignIn.html', {'form':form, 'state':message})
 
 
 def loginPage(request):
