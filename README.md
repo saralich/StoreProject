@@ -7,4 +7,6 @@ Major Challenges:
 There is always an issue of outside work; neither of us are slackers in our courses, so balancing this project with the remainder of our workload was tricky. Beyond that, linking the pages, setting up order forms, and fully understanding the inner workings of Django were our major issues.
 
 Programming Practices:
-We started off sending an obscene amount of zip files back and forth to edit them on our own terms before eventually using the beauty of github. We had partner coding sessions, talked strategy the entire process, and coded like the wizards we are.
+We started off sending an obscene amount of zip files back and forth to edit them on our own terms before eventually using the beauty of github. We had partner coding sessions, talked strategy the entire process, and used efficient, clean code paired with necessary comments to communicate our ideas.
+
+Note: Christine still has her late day to use; I used mine on a homework but have decided to take a zero on that homework (HW5) in order to use the late day on this project.
